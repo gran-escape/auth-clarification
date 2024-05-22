@@ -1,0 +1,116 @@
+#root {
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+* {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.invoiceInput {
+  padding: 8px;
+}
+
+.row-total {
+  padding-right: 5px;
+  text-align: right;
+  min-width: 75px;
+}
+
+#notes {
+  min-width: 200px;
+}
+
+td {
+  color: #4e4e4e;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-width: 10px;
+  max-width: 1000px;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.table-container {
+  padding-top: 20px;
+}
+
+.table-container > table {
+  margin: auto;
+}
+
+.table-button {
+  background-color: white;
+  padding: 6px;
+  min-width: 70px;
+  border-radius: 5px;
+  border-width: 1px;
+}
+
+.add-button:hover {
+  background-color: rgb(149, 255, 135);
+}
+
+.del-button:hover {
+  background-color: red;
+  color: white;
+}
+
+.col-total {
+  border-top: 1px black solid;
+}
+
+.done-button {
+  margin-bottom: 10px;
+}
+
+/* for the invoice info (location, date, etc...) */
+.top-container {
+  padding: 18px;
+  font-size: medium;
+}
+
+.top-container {
+  text-align: center;
+}
+
+.top-container > input {
+  color: #4e4e4e;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  min-width: 10px;
+  max-width: 1000px;
+  margin: 15px;
+}
+
+/* general dash-page ui css */
+.dash-page {
+  margin: auto;
+  text-align: center;
+}
+
+/* general container styling (Create and Past Invoices "boxes" */
+.past-container {
+  max-height: 50lvh;
+  overflow-y: scroll;
+}
+
+.past-title {
+  color: #4e4e4e;
+}
+
+.past-inv-card {
+  margin: auto;
+  text-align: center;
+  border-bottom: 1px black solid;
+  width: 75%;
+  padding-bottom: 10px;
+}
+
+/* top of dashboard greeting */
+.greeting-top {
+  border-bottom: 1px black solid;
+}

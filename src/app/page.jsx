@@ -1,7 +1,6 @@
 import { Login } from "./ui/login-form";
 import checkSessionCookie from "./actions/cookieChecker";
 import { redirect } from "next/navigation";
-import { Dash } from "./ui/dashboard";
 
 const API_URL = "http://localhost:3000/api/all";
 
