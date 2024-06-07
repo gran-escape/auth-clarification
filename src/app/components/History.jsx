@@ -1,5 +1,6 @@
 "use client";
 
+import { redirect } from "next/navigation";
 import React from "react";
 
 export default function History(props) {
@@ -8,6 +9,12 @@ export default function History(props) {
   async function deleteClicked(event) {
     console.log(event.target.id);
     props.deleteInvoice(event.target.id);
+  }
+
+  function viewClicked(event) {
+    const id = event.target.id;
+    console.log(`[review] review for id: ${id}`);
+    redirect("localhost:3000/review");
   }
 
   console.log(
@@ -33,6 +40,11 @@ export default function History(props) {
               >
                 Delete
               </button>
+              <a href={`/review?invoice=${item.id}`}>
+                <button className="add-button table-button" id={item.id}>
+                  View
+                </button>
+              </a>
             </div>
           </div>
         );
