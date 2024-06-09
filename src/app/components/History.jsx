@@ -11,12 +11,6 @@ export default function History(props) {
     props.deleteInvoice(event.target.id);
   }
 
-  function viewClicked(event) {
-    const id = event.target.id;
-    console.log(`[review] review for id: ${id}`);
-    redirect("localhost:3000/review");
-  }
-
   console.log(
     `[history] ${invoices.length} invoices appearing in History client component`
   );

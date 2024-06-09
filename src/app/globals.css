@@ -114,3 +114,9 @@ table {
 .greeting-top {
   border-bottom: 1px black solid;
 }
+
+/* review page styling */
+.review-header {
+  background-color: #c9c9c9;
+  padding-right: 100px;
+}
