@@ -1,5 +1,7 @@
 "use client";
 
+// notes
+
 import { redirect } from "next/navigation";
 import React from "react";
 
