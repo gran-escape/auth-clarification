@@ -1,3 +1,4 @@
+import checkSessionCookie from "../actions/cookieChecker";
 const API_URL = "http://localhost:4000/";
 
 /**
@@ -42,6 +43,9 @@ export async function POST(request) {
 
 export async function GET() {
   console.log("[web] web api GET has been called");
+  if (!checkSessionCookie()) {
+    return new Response({ status: false });
+  }
 
   try {
     const request = new Request(API_URL + "GetInvoicesFromDate", {

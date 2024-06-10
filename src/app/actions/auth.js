@@ -17,6 +17,11 @@ db.connect();
 
 const SECRET_KEY = new TextEncoder().encode(process.env.SESSION_SECRET);
 
+/**
+ * takes encrypted token and puts it into a cookie for
+ * the user to use.
+ * @param {string} payload
+ */
 export async function makeCookie(payload) {
   const expiresAt = new Date(Date.now() + 60);
 
@@ -37,6 +42,13 @@ export async function decryptToken(payload) {
   console.log(contents);
 }
 
+/**
+ * takes in payload which is the info wanted inside of the cookie,
+ * sign and encrypts it. returns it over to the calling function
+ * to finish making the cookie.
+ * @param {String} payload
+ * @returns token
+ */
 export async function signToken(payload) {
   const jwt = await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" })
@@ -48,6 +60,13 @@ export async function signToken(payload) {
   return jwt;
 }
 
+/**
+ * checks user credentials against what is in the database. if it
+ * is correct, a cookie is created with basic info and function is
+ * called to make sign token, then make cookie.
+ * @param {username, password} param
+ * @returns status
+ */
 export async function checkLogin({ username, password }) {
   console.log(`checking for user ${username} and here is password ${password}`);
   const response = await db.query("SELECT * FROM users WHERE username = $1", [
@@ -75,6 +94,14 @@ export async function checkLogin({ username, password }) {
   }
 }
 
+/**
+ * function that takes the username and password field from the login screen
+ * and attempts to add them to the user database. this also includes some very
+ * basic validation (need to fix!) and error catching.
+ *
+ * @param {username, password} param
+ * @returns message
+ */
 export async function registerUser({ username, password }) {
   // Normally would send through something for form validation
   if (username.length > 5 && password.length > 5) {
