@@ -36,8 +36,11 @@ export default function History(props) {
               </button>
               <a href={`/review?invoice=${item.id}`}>
                 <button className="add-button table-button" id={item.id}>
-                  View
+                  Print
                 </button>
+              </a>
+              <a href={`edit?invoice=${item.id}`}>
+                <button className="update-button table-button">Edit</button>
               </a>
             </div>
           </div>

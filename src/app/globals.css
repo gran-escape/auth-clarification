@@ -50,6 +50,7 @@ table {
   border-width: 1px;
 }
 
+/* some button styling */
 .add-button:hover {
   background-color: rgb(149, 255, 135);
 }
@@ -65,6 +66,11 @@ table {
 
 .done-button {
   margin-bottom: 10px;
+}
+
+/* specifically for the update button in the review comp. */
+.update-button:hover {
+  background-color: gold;
 }
 
 /* for the invoice info (location, date, etc...) */

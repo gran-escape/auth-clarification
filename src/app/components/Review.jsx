@@ -8,7 +8,7 @@ export default function Review() {
   const [invoice, setInvoice] = useState();
   const API_URL = "http://localhost:3000/api/invoice";
 
-  function foo() {
+  function showInvoice() {
     const { general, details } = invoice;
 
     // deconstruct the general invoice info
@@ -68,5 +68,5 @@ export default function Review() {
     getInvoiceData();
   }, []);
 
-  return <div>{invoice ? foo() : <h2>Loading...</h2>}</div>;
+  return <div>{invoice ? showInvoice() : <h2>Loading...</h2>}</div>;
 }
