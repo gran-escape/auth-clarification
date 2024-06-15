@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import { redirect, useSearchParams } from "next/navigation";
+import EditInvoice from "./EditInvoice";
+import { goHomePage } from "../actions/actions";
 
 export default function EditComponent(props) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -9,18 +11,44 @@ export default function EditComponent(props) {
   const [invoiceDetails, setInvoiceDetials] = useState();
   const API_URL = "http://localhost:3000/api/invoice";
 
+  /**
+   * recieves a json object from the child component to deal with
+   * updating the database. this is using a sloppy method of clearing
+   * out all old detail/ line items and re-inserting each one. Will
+   * compare later on!
+   *
+   * @param {JSON} data
+   */
+  async function complete(data) {
+    //TODO: implement
+    console.log("complete!");
+
+    try {
+      goHomePage();
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function deconstructDetailData(detailData) {
     let detailArr = [];
     detailData.forEach((detail) => {
       // deconstruct for better variable names
       const {
         id: id,
-        item_name: itemName,
+        item_name: name,
         item_notes: notes,
-        item_price: itemPrice,
+        item_price: cost,
         item_qty: quantity,
       } = detail;
-      detailArr.push({ id, itemName, notes, itemPrice, quantity });
+      detailArr.push({
+        id,
+        name,
+        notes,
+        cost,
+        quantity,
+        total: (quantity * cost).toFixed(2),
+      });
     });
     return detailArr;
   }
@@ -31,7 +59,7 @@ export default function EditComponent(props) {
       id,
       price,
       location,
-      date_created: dateCreated,
+      date_created: date,
       invoice_notes: invoiceNotes,
     } = invoiceData;
 
@@ -39,7 +67,7 @@ export default function EditComponent(props) {
       id: id,
       price: price,
       location: location,
-      dateCreated: dateCreated,
+      date: date,
       invoiceNotes: invoiceNotes,
     };
   }
@@ -78,7 +106,16 @@ export default function EditComponent(props) {
   function showInvoice() {
     // TODO: implement
     console.log(invoiceDetails);
-    return <h1>Hello!</h1>;
+    return (
+      <div>
+        <h1>Hello!</h1>
+        <EditInvoice
+          general={invoiceGeneral}
+          details={invoiceDetails}
+          complete={complete}
+        />
+      </div>
+    );
   }
 
   /**
@@ -90,7 +127,7 @@ export default function EditComponent(props) {
   }, []);
 
   return invoiceGeneral ? (
-    showInvoice()
+    <div>{showInvoice()}</div>
   ) : (
     <h2>Loading Invoice {searchParams[1]}...</h2>
   );
