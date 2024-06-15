@@ -62,11 +62,13 @@ export default function EditComponent(props) {
       invoice_notes: invoiceNotes,
     } = invoiceData;
 
+    console.log(date);
+
     return {
       id: id,
       price: price,
       location: location,
-      date: date,
+      date: new Date(date).toISOString().substring(0, 10),
       invoiceNotes: invoiceNotes,
     };
   }
