@@ -21,10 +21,9 @@ export default function EditComponent(props) {
    */
   async function complete(data) {
     //TODO: implement
-    console.log("complete!");
-
+    console.log(data);
     try {
-      goHomePage();
+      //goHomePage();
     } catch (error) {
       console.log(error);
     }

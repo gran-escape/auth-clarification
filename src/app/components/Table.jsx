@@ -24,7 +24,7 @@ export default function Table(props) {
     const { name, cost, quantity } = rowState;
     let isValid = false;
 
-    if (name.length > 1 && cost > 0 && quantity > 0) {
+    if (name.length > 0 && cost > 0 && quantity > 0) {
       isValid = true;
     } else {
       isValid = false;

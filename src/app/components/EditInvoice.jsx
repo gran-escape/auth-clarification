@@ -6,7 +6,7 @@ export default function EditInvoice(props) {
   const [invoiceInfo, setInfo] = useState(props.general);
   const [rows, setRows] = useState(props.details);
 
-  console.log(props.details);
+  //console.log(props.details);
 
   function generalInfoChange(event) {
     // TODO: maybe fix the need for this at some point...
@@ -49,8 +49,9 @@ export default function EditInvoice(props) {
     let total = 0;
     rows.forEach((row) => (total += parseFloat(row.total)));
     setInfo((prevVal) => {
-      return { ...prevVal, total: total };
+      return { ...prevVal, price: total };
     });
+    console.log(`New total is ${total}`);
   }, [rows]);
 
   /**
@@ -58,7 +59,7 @@ export default function EditInvoice(props) {
    * any fields are reset to empty/ defaults.
    */
   function complete() {
-    props.complete(null);
+    props.complete(rows);
   }
 
   return (
@@ -82,6 +83,7 @@ export default function EditInvoice(props) {
           id="invoiceNotes"
           placeholder="Add Notes Here"
           onChange={generalInfoChange}
+          value={invoiceInfo.invoiceNotes}
         />
         <label htmlFor="date">Date</label>
         <input
