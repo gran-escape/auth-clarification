@@ -28,3 +28,16 @@ export async function GET(request) {
 
   return new Response(JSON.stringify(returnData));
 }
+
+export async function PATCH(request) {
+  const data = await request.json();
+  console.log(data);
+
+  // passes the object to update along to the database API
+  const req = new Request(API_URL + "Update", {
+    method: "PATCH",
+    body: data,
+  });
+  await fetch(req);
+  return new Response({ status: 200 });
+}

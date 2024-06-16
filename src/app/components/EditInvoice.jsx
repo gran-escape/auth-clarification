@@ -6,8 +6,6 @@ export default function EditInvoice(props) {
   const [invoiceInfo, setInfo] = useState(props.general);
   const [rows, setRows] = useState(props.details);
 
-  //console.log(props.details);
-
   function generalInfoChange(event) {
     // TODO: maybe fix the need for this at some point...
     if (event) {
@@ -43,7 +41,7 @@ export default function EditInvoice(props) {
     setRows(tempArr);
   }
 
-  // recalculates total when row is added
+  // recalculates total when row is added, sends data to parent component
   React.useEffect(() => {
     console.log("retotal");
     let total = 0;
@@ -51,15 +49,20 @@ export default function EditInvoice(props) {
     setInfo((prevVal) => {
       return { ...prevVal, price: total };
     });
-    console.log(`New total is ${total}`);
+    props.updateDetails(rows);
   }, [rows]);
+
+  // useEffect cateches changes to general info to pass to parent component
+  React.useEffect(() => {
+    props.updateGeneral(invoiceInfo);
+  }, [invoiceInfo]);
 
   /**
    * when done selected, send info to server funcation called
    * any fields are reset to empty/ defaults.
    */
   function complete() {
-    props.complete(rows);
+    props.complete();
   }
 
   return (

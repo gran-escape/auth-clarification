@@ -12,23 +12,45 @@ export default function EditComponent(props) {
   const API_URL = "http://localhost:3000/api/invoice";
 
   /**
-   * recieves a json object from the child component to deal with
-   * updating the database. this is using a sloppy method of clearing
-   * out all old detail/ line items and re-inserting each one. Will
-   * compare later on!
+   * function to be called by child function when button is
+   * clicked. will send JSON to server api endpoint to deal
+   * with.
    *
    * @param {JSON} data
    */
-  async function complete(data) {
+  async function complete() {
     //TODO: implement
-    console.log(data);
     try {
-      //goHomePage();
+      const request = new Request(API_URL, {
+        method: "PATCH",
+        body: JSON.stringify({
+          general: invoiceGeneral,
+          details: invoiceDetails,
+        }),
+      });
+
+      await fetch(request);
     } catch (error) {
       console.log(error);
     }
   }
 
+  function updateDetails(data) {
+    setInvoiceDetials(data);
+  }
+
+  function updateGeneral(data) {
+    setInvoiceGeneral(data);
+  }
+
+  /**
+   * takes the detail data sent over from the
+   * server and deconstructs it into a JSON
+   * object for use in a React state.
+   *
+   * @param {JSON} detailData
+   * @returns JSON data
+   */
   function deconstructDetailData(detailData) {
     let detailArr = [];
     detailData.forEach((detail) => {
@@ -61,8 +83,6 @@ export default function EditComponent(props) {
       date_created: date,
       invoice_notes: invoiceNotes,
     } = invoiceData;
-
-    console.log(date);
 
     return {
       id: id,
@@ -111,6 +131,8 @@ export default function EditComponent(props) {
       <div>
         <h1>Hello!</h1>
         <EditInvoice
+          updateDetails={updateDetails}
+          updateGeneral={updateGeneral}
           general={invoiceGeneral}
           details={invoiceDetails}
           complete={complete}
