@@ -19,17 +19,23 @@ export default function EditComponent(props) {
    * @param {JSON} data
    */
   async function complete() {
-    //TODO: implement
+    const bodyData = JSON.stringify({
+      general: invoiceGeneral,
+      details: invoiceDetails,
+    });
+
     try {
+      const header = new Headers();
+      header.append("Content-Type", "application/json");
+
       const request = new Request(API_URL, {
-        method: "PATCH",
-        body: JSON.stringify({
-          general: invoiceGeneral,
-          details: invoiceDetails,
-        }),
+        method: "PUT",
+        body: bodyData,
+        headers: header,
       });
 
       await fetch(request);
+      goHomePage();
     } catch (error) {
       console.log(error);
     }
