@@ -14,8 +14,6 @@ export function Login() {
     const target = e.target.id;
     const value = e.target.value;
 
-    console.log(target);
-    console.log(value);
     formUpdate((prevValue) => {
       return { ...prevValue, [target]: value };
     });
