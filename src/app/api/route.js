@@ -10,6 +10,15 @@ const API_URL = "http://localhost:4000/";
  * @returns status (good or bad)
  */
 export async function POST(request) {
+  // check if valid cookie
+  const isValid = await checkSessionCookie();
+  if (!isValid) {
+    console.log("invalid");
+    return new Response(
+      JSON.stringify({ status: "error", error: "invalid or no user token" })
+    );
+  }
+
   const req = await request.json();
   const { location, invoiceNotes, date, total } = req.invoice.invoiceInfo;
   const { rows } = req.details;

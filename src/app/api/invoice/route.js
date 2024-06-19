@@ -10,31 +10,40 @@ const API_URL = "http://localhost:4000/";
  * @returns status
  */
 export async function GET(request) {
-  console.log(`[invoice get] get single invoice called`);
-  const id = await request.nextUrl.searchParams.getAll("invoice");
-  console.log(parseInt(id[0]));
+  // check if valid cookie
+  const isValid = await checkSessionCookie();
+  if (!isValid) {
+    console.log("invalid");
+    return new Response(
+      JSON.stringify({ status: "error", error: "invalid or no user token" })
+    );
+  } else {
+    console.log(`[invoice get] get single invoice called`);
+    const id = await request.nextUrl.searchParams.getAll("invoice");
+    console.log(parseInt(id[0]));
 
-  // get item data
-  const itemRes = await fetch(API_URL + `GetDetails?id=${id}`, {
-    next: { revalidate: 0 },
-  });
-  const itemData = await itemRes.json();
+    // get item data
+    const itemRes = await fetch(API_URL + `GetDetails?id=${id}`, {
+      next: { revalidate: 0 },
+    });
+    const itemData = await itemRes.json();
 
-  // get general invoice data
-  const genRes = await fetch(API_URL + `GetInvoiceGeneral?id=${id}`, {
-    next: { revalidate: 0 },
-  });
-  const genData = await genRes.json();
+    // get general invoice data
+    const genRes = await fetch(API_URL + `GetInvoiceGeneral?id=${id}`, {
+      next: { revalidate: 0 },
+    });
+    const genData = await genRes.json();
 
-  // put it all together and send back
-  const returnData = {
-    general: genData,
-    details: itemData,
-  };
+    // put it all together and send back
+    const returnData = {
+      general: genData,
+      details: itemData,
+    };
 
-  console.log(JSON.stringify(returnData));
+    console.log(JSON.stringify(returnData));
 
-  return new Response(JSON.stringify(returnData));
+    return new Response(JSON.stringify(returnData));
+  }
 }
 
 export async function PUT(request) {
