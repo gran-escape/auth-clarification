@@ -145,6 +145,7 @@ export default function Invoice(props) {
           id="invoiceNotes"
           placeholder="Add Notes Here"
           onChange={generalInfoChange}
+          value={invoiceInfo.invoiceNotes}
         />
         <label htmlFor="date">Date</label>
         <input
