@@ -28,7 +28,7 @@ export async function makeCookie(payload) {
   cookies().set("token", payload, {
     maxAge: 60 * 10,
     httpOnly: true,
-    secure: true,
+    secure: false, //TODD: Remember this is here!!!!
     expires: expiresAt,
     sameSite: "lax",
     path: "/",
