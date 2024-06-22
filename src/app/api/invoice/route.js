@@ -2,7 +2,7 @@ import checkSessionCookie from "@/app/actions/cookieChecker";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/dist/server/api-utils";
 
-const API_URL = "http://localhost:4000/";
+const API_URL = process.env.DB_API_URL;
 
 /**
  * This endpoint/ route is setup to call the API to get a single invoice

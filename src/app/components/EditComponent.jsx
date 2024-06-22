@@ -9,7 +9,7 @@ export default function EditComponent(props) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [invoiceGeneral, setInvoiceGeneral] = useState();
   const [invoiceDetails, setInvoiceDetials] = useState();
-  const API_URL = "http://localhost:3000/api/invoice";
+  const API_URL = "http://localhost:3000/api/invoice"; // for web api
 
   /**
    * function to be called by child function when button is

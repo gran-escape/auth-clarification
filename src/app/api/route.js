@@ -1,5 +1,5 @@
 import checkSessionCookie from "../actions/cookieChecker";
-const API_URL = "http://localhost:4000/";
+const API_URL = process.env.DB_API_URL;
 
 /**
  * function of the Web API that takes in a request from the

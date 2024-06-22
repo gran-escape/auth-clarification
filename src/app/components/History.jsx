@@ -16,7 +16,7 @@ export default function History(props) {
   );
   return (
     <div className="past-container">
-      {invoices.length > 1 ? null : <p>Loading Invoices...</p>}
+      {invoices.length > -1 ? null : <p>Loading Invoices...</p>}
       {invoices.map((item, index) => {
         return (
           <div key={index} className="past-inv-card">
