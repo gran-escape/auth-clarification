@@ -53,6 +53,7 @@ export default function Table(props) {
 
     if (isValid) {
       props.addRow(rowState);
+
       // reset the state of the inputs
       setRow({
         name: "",
