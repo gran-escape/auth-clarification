@@ -7,9 +7,58 @@ import History from "../components/History";
 import Summary from "../components/Summary";
 
 export function Dash(props) {
+  const API_URL_SUM = "http://localhost:3000/api/invoice/range";
   const API_URL_ALL = "http://localhost:3000/api/all";
   const API_URL = "http://localhost:3000/api";
   const [allInvoices, setInvoices] = React.useState([]);
+  const [summary, setSummary] = React.useState({
+    invoiceCount: -1,
+    dollarTotal: 0,
+    start: "",
+    end: "",
+  });
+
+  /**
+   * Gets a weeks worth of invoices and makes useful summed information
+   * to send over to the summary component to display.
+   */
+  async function getSummary() {
+    let date = new Date(Date.now());
+    let day = date.getDay();
+    console.log(day);
+
+    while (day != 6) {
+      let tmp = new Date(date.setDate(date.getDate() - 1));
+      day = tmp.getDay();
+      console.log(day);
+      date = tmp;
+    }
+
+    let end = new Date(date.setDate(date.getDate() + 1)).toISOString();
+    let begin = new Date(date.setDate(date.getDate() - 6)).toISOString();
+
+    try {
+      const res = await fetch(API_URL_SUM + `?begin=${begin}&end=${end}`);
+      const data = await res.json();
+      let total = 0;
+
+      data.forEach((element) => {
+        console.log(element);
+        total = total + parseFloat(element.price);
+      });
+
+      console.log(data.length);
+
+      setSummary({
+        invoiceCount: data.length,
+        dollarTotal: total,
+        start: begin,
+        end: end,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   /**
    * function to get all regular invoice data for the past
@@ -50,13 +99,14 @@ export function Dash(props) {
   // used to get old invoices initially on load
   React.useEffect(() => {
     getData();
+    getSummary();
   }, []);
 
   return (
     <div>
       <h2 className="greeting-top">Welcome back!</h2>
       <div>
-        <Summary />
+        <Summary summary={summary} />
         <Invoice reloadInvoices={getData} />
         <h2 className="past-title">Past Invoices</h2>
         <History data={allInvoices} deleteInvoice={deleteInvoice} />
