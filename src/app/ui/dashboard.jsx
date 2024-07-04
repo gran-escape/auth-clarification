@@ -4,6 +4,7 @@ import React from "react";
 import Invoice from "../components/Invoice";
 import Sidebar from "../components/Sidebar";
 import History from "../components/History";
+import Summary from "../components/Summary";
 
 export function Dash(props) {
   const API_URL_ALL = "http://localhost:3000/api/all";
@@ -55,6 +56,7 @@ export function Dash(props) {
     <div>
       <h2 className="greeting-top">Welcome back!</h2>
       <div>
+        <Summary />
         <Invoice reloadInvoices={getData} />
         <h2 className="past-title">Past Invoices</h2>
         <History data={allInvoices} deleteInvoice={deleteInvoice} />
