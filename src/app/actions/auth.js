@@ -69,9 +69,10 @@ export async function signToken(payload) {
  */
 export async function checkLogin({ username, password }) {
   console.log(`checking for user ${username} and here is password ${password}`);
-  const response = await db.query("SELECT * FROM users WHERE username = $1", [
-    username,
-  ]);
+  const response = await db.query(
+    "SELECT * FROM users WHERE LOWER(username) = LOWER($1)",
+    [username]
+  );
   if (response.rowCount > 0) {
     // get id username password
     const {
@@ -112,7 +113,7 @@ export async function registerUser({ username, password }) {
 
       // send to database, get unique id back
       const returnId = await db.query(
-        "INSERT INTO users(username, password) VALUES($1,$2) RETURNING id",
+        "INSERT INTO users(username, password) VALUES(LOWER($1),$2) RETURNING id",
         [username, encryptedPass]
       );
 
