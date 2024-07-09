@@ -126,3 +126,15 @@ table {
   background-color: #c9c9c9;
   padding-right: 100px;
 }
+
+/* summary screen on dashboard */
+.summary-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.summary-element {
+  display: flex;
+  margin: 0 2rem 0 2rem;
+}

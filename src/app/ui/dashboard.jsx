@@ -35,7 +35,7 @@ export function Dash(props) {
     }
 
     let end = new Date(date.setDate(date.getDate() + 1)).toISOString();
-    let begin = new Date(date.setDate(date.getDate() - 6)).toISOString();
+    let begin = new Date(date.setDate(date.getDate() - 7)).toISOString();
 
     try {
       const res = await fetch(API_URL_SUM + `?begin=${begin}&end=${end}`);

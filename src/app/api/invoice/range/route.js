@@ -17,6 +17,7 @@ export async function GET(request) {
         DB_API_URL + "InvoicesDateRange" + `?begin=${beginDate}&end=${endDate}`
       );
       const data = await res.json();
+      console.log(data);
       return new Response(JSON.stringify(data));
     } catch (error) {
       console.error(
