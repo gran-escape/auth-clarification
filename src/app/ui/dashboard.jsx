@@ -72,6 +72,7 @@ export function Dash(props) {
     const data = await response.json();
     console.log(data);
     setInvoices(data);
+    await getSummary();
   }
 
   /**
