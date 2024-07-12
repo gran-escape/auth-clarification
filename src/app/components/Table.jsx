@@ -195,17 +195,12 @@ export default function Table(props) {
                 <td>{row.quantity}</td>
                 <td>{row.notes}</td>
                 <td>
-                  <input
-                    type="checkbox"
-                    name="tax"
-                    id="tax"
-                    checked={row.tax}
-                    disabled
-                  />
+                  <input type="checkbox" checked={row.tax} disabled />
                 </td>
                 <td className="row-total">{row.total}</td>
                 <td>
                   <button
+                    name={index + "checkbox"}
                     id={index}
                     type="button"
                     className="table-button del-button"
