@@ -4,6 +4,7 @@ import React from "react";
 
 export default function Table(props) {
   const rows = props.rows;
+  const taxPerc = 5; //TODO: make variable!!
   let invoiceTotal = 0;
 
   // default row state / init
@@ -13,6 +14,7 @@ export default function Table(props) {
     quantity: 1,
     notes: "",
     total: 1,
+    tax: false,
   });
 
   /**
@@ -61,6 +63,7 @@ export default function Table(props) {
         quantity: 1,
         notes: "",
         total: 1,
+        tax: false,
       });
     } else {
       alert(
@@ -77,8 +80,10 @@ export default function Table(props) {
    */
   function rowChange(event) {
     // deconstruct id and value
-    const { id, value } = event.target;
+    const { id, value, checked } = event.target;
     let total = rowState.total;
+
+    console.log(event.target.checked);
 
     // if qty is changed, calculate new total
     if (id == "quantity") {
@@ -92,10 +97,17 @@ export default function Table(props) {
       total = total.toFixed(2);
     }
 
-    // update row state
-    setRow((prevVal) => {
-      return { ...prevVal, [id]: value, total: total };
-    });
+    // deal with the checkbox
+    if (id == "tax") {
+      setRow((prevVal) => {
+        return { ...prevVal, tax: checked };
+      });
+    } else {
+      // update row state
+      setRow((prevVal) => {
+        return { ...prevVal, [id]: value, total: total };
+      });
+    }
   }
 
   return (
@@ -108,6 +120,7 @@ export default function Table(props) {
             <th>Cost</th>
             <th>Qty</th>
             <th>Notes</th>
+            <th>Tax?</th>
             <th>Total</th>
           </tr>
         </thead>
@@ -153,6 +166,15 @@ export default function Table(props) {
                 placeholder="Add Notes"
               />
             </td>
+            <td className="invoiceInput">
+              <input
+                type="checkbox"
+                name="tax"
+                id="tax"
+                checked={rowState.tax}
+                onChange={rowChange}
+              />
+            </td>
             <td className="row-total">${rowState.total}</td>
             <td>
               <button
@@ -172,6 +194,15 @@ export default function Table(props) {
                 <td>{row.cost}</td>
                 <td>{row.quantity}</td>
                 <td>{row.notes}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    name="tax"
+                    id="tax"
+                    checked={row.tax}
+                    disabled
+                  />
+                </td>
                 <td className="row-total">{row.total}</td>
                 <td>
                   <button
@@ -187,6 +218,7 @@ export default function Table(props) {
             );
           })}
           <tr className="col-total">
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
