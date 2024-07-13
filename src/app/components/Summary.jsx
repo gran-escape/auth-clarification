@@ -16,14 +16,18 @@ export default function Summary(props) {
         <div className="summary-element">
           <div>
             <h2>Money</h2>
-            <p>${props.summary.dollarTotal}</p>
+            <p>${props.summary.dollarTotal.toFixed(3)}</p>
           </div>
         </div>
         <div className="summary-element">
           <div>
             <h2>Avg. $</h2>
             <p>
-              ${props.summary.dollarTotal / props.summary.invoiceCount} average
+              $
+              {(props.summary.dollarTotal / props.summary.invoiceCount).toFixed(
+                3
+              )}{" "}
+              / invoice
             </p>
           </div>
         </div>

@@ -2,7 +2,6 @@
 
 import React from "react";
 import Invoice from "../components/Invoice";
-import Sidebar from "../components/Sidebar";
 import History from "../components/History";
 import Summary from "../components/Summary";
 

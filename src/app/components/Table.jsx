@@ -4,7 +4,7 @@ import React from "react";
 
 export default function Table(props) {
   const rows = props.rows;
-  const taxPerc = 5; //TODO: make variable!!
+  const taxRate = 0.05; //TODO: make variable!!
   let invoiceTotal = 0;
 
   // default row state / init
@@ -62,6 +62,7 @@ export default function Table(props) {
         cost: 1.0,
         quantity: 1,
         notes: "",
+        taxTotal: 0,
         total: 1,
         tax: false,
       });
@@ -73,6 +74,22 @@ export default function Table(props) {
   }
 
   /**
+   * takes in the value of the current item and adds the tax to the individual item that
+   * is being prepped to be added.
+   * @param {total} value
+   * @returns total with tax added
+   */
+  function addTax(value) {
+    const noTaxVal = parseFloat(value);
+    const calculatedTax = parseFloat(noTaxVal) * taxRate;
+    const total = noTaxVal + calculatedTax;
+    console.log(
+      `[debug] tax amount: ${calculatedTax} total with tax: ${total}`
+    );
+    return total.toFixed(2); // TODO: is this sufficient rounding for taxes?
+  }
+
+  /**
    * on change listenter for each cell of the table. finds the
    * target id and value and modifies the state of the row
    * accordingly.
@@ -81,20 +98,25 @@ export default function Table(props) {
   function rowChange(event) {
     // deconstruct id and value
     const { id, value, checked } = event.target;
-    let total = rowState.total;
-
-    console.log(event.target.checked);
+    let total = parseFloat(rowState.total);
 
     // if qty is changed, calculate new total
     if (id == "quantity") {
       total = value * rowState.cost;
       total = total.toFixed(2);
+      // check for tax
+      if (rowState.tax) {
+        total = addTax(total);
+      }
     }
 
     // if cost is changed, calculate new total
     if (id == "cost") {
       total = value * rowState.quantity;
       total = total.toFixed(2);
+      if (rowState.tax) {
+        total = addTax(total);
+      }
     }
 
     // deal with the checkbox
@@ -102,8 +124,20 @@ export default function Table(props) {
       setRow((prevVal) => {
         return { ...prevVal, tax: checked };
       });
+      // if checkbox selected, calculate tax, otherwise, just set to cost * qty
+      if (checked) {
+        setRow((prevVal) => {
+          return { ...prevVal, total: addTax(total) };
+        });
+      } else {
+        total = rowState.cost * rowState.quantity;
+        setRow((prevVal) => {
+          return { ...prevVal, total: total };
+        });
+      }
     } else {
       // update row state
+      console.log("updating row");
       setRow((prevVal) => {
         return { ...prevVal, [id]: value, total: total };
       });
