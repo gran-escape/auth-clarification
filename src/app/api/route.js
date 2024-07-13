@@ -23,9 +23,8 @@ export async function POST(request) {
   const { location, invoiceNotes, date, total } = req.invoice.invoiceInfo;
   const { rows } = req.details;
 
-  console.log(
-    `location: ${location}\nnotes: ${invoiceNotes}\ndate: ${date}\ntotal: ${total}`
-  );
+  console.log(rows);
+
   rows.forEach((row) => {
     const { name, cost, quantity, notes } = row;
     console.log(`${name}\n${cost}\n${quantity}\n${notes}`);

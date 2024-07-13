@@ -14,6 +14,7 @@ export default function Table(props) {
     quantity: 1,
     notes: "",
     total: 1,
+    taxAmount: 0,
     tax: false,
   });
 
@@ -74,19 +75,15 @@ export default function Table(props) {
   }
 
   /**
-   * takes in the value of the current item and adds the tax to the individual item that
-   * is being prepped to be added.
+   * takes in the value of the current item and returns the tax amount
    * @param {total} value
    * @returns total with tax added
    */
   function addTax(value) {
     const noTaxVal = parseFloat(value);
     const calculatedTax = parseFloat(noTaxVal) * taxRate;
-    const total = noTaxVal + calculatedTax;
-    console.log(
-      `[debug] tax amount: ${calculatedTax} total with tax: ${total}`
-    );
-    return total.toFixed(2); // TODO: is this sufficient rounding for taxes?
+    console.log(`[debug] tax amount: ${calculatedTax}`);
+    return calculatedTax.toFixed(2); // TODO: is this sufficient rounding for taxes?
   }
 
   /**
@@ -106,16 +103,19 @@ export default function Table(props) {
       total = total.toFixed(2);
       // check for tax
       if (rowState.tax) {
-        total = addTax(total);
+        total = rowState.taxAmount + total;
       }
     }
 
     // if cost is changed, calculate new total
     if (id == "cost") {
       total = value * rowState.quantity;
+      console.log(total);
       total = total.toFixed(2);
+
+      // check for tax
       if (rowState.tax) {
-        total = addTax(total);
+        total = parseFloat(rowState.taxAmount) + total;
       }
     }
 
@@ -126,8 +126,12 @@ export default function Table(props) {
       });
       // if checkbox selected, calculate tax, otherwise, just set to cost * qty
       if (checked) {
+        console.log("tax was checked");
         setRow((prevVal) => {
-          return { ...prevVal, total: addTax(total) };
+          return {
+            ...prevVal,
+            total: parseFloat(rowState.total) + addTax(total),
+          };
         });
       } else {
         total = rowState.cost * rowState.quantity;
@@ -135,6 +139,7 @@ export default function Table(props) {
           return { ...prevVal, total: total };
         });
       }
+      console.log(rowState);
     } else {
       // update row state
       console.log("updating row");
