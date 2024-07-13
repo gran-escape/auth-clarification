@@ -83,7 +83,7 @@ export default function Table(props) {
     const noTaxVal = parseFloat(value);
     const calculatedTax = parseFloat(noTaxVal) * taxRate;
     console.log(`[debug] tax amount: ${calculatedTax}`);
-    return calculatedTax.toFixed(2); // TODO: is this sufficient rounding for taxes?
+    return parseFloat(calculatedTax.toFixed(2)); // TODO: is this sufficient rounding for taxes?
   }
 
   /**
@@ -100,7 +100,7 @@ export default function Table(props) {
     // if qty is changed, calculate new total
     if (id == "quantity") {
       total = value * rowState.cost;
-      total = total.toFixed(2);
+      total = parseFloat(total.toFixed(2));
       // check for tax
       if (rowState.tax) {
         total = rowState.taxAmount + total;
@@ -110,11 +110,11 @@ export default function Table(props) {
     // if cost is changed, calculate new total
     if (id == "cost") {
       total = value * rowState.quantity;
-      console.log(total);
-      total = total.toFixed(2);
+      total = parseFloat(total.toFixed(2));
 
       // check for tax
       if (rowState.tax) {
+        console.log("cost updating tax");
         total = parseFloat(rowState.taxAmount) + total;
       }
     }
@@ -124,6 +124,7 @@ export default function Table(props) {
       setRow((prevVal) => {
         return { ...prevVal, tax: checked };
       });
+
       // if checkbox selected, calculate tax, otherwise, just set to cost * qty
       if (checked) {
         console.log("tax was checked");
@@ -139,7 +140,6 @@ export default function Table(props) {
           return { ...prevVal, total: total };
         });
       }
-      console.log(rowState);
     } else {
       // update row state
       console.log("updating row");
