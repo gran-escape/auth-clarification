@@ -14,7 +14,7 @@ export default function Table(props) {
     quantity: 1,
     notes: "",
     total: 1,
-    taxAmount: 0,
+    taxTotal: 0,
     tax: false,
   });
 
@@ -101,22 +101,12 @@ export default function Table(props) {
     if (id == "quantity") {
       total = value * rowState.cost;
       total = parseFloat(total.toFixed(2));
-      // check for tax
-      if (rowState.tax) {
-        total = rowState.taxAmount + total;
-      }
     }
 
     // if cost is changed, calculate new total
     if (id == "cost") {
       total = value * rowState.quantity;
       total = parseFloat(total.toFixed(2));
-
-      // check for tax
-      if (rowState.tax) {
-        console.log("cost updating tax");
-        total = parseFloat(rowState.taxAmount) + total;
-      }
     }
 
     // deal with the checkbox
@@ -141,11 +131,24 @@ export default function Table(props) {
         });
       }
     } else {
-      // update row state
-      console.log("updating row");
-      setRow((prevVal) => {
-        return { ...prevVal, [id]: value, total: total };
-      });
+      // update row state with tax
+      if (rowState.tax) {
+        console.log("Taxes...");
+        let tax = addTax(total);
+        setRow((prevVal) => {
+          return {
+            ...prevVal,
+            [id]: value,
+            total: total + tax,
+            taxTotal: tax,
+          };
+        });
+      } else {
+        console.log("updating row");
+        setRow((prevVal) => {
+          return { ...prevVal, [id]: value, total: total };
+        });
+      }
     }
   }
 
