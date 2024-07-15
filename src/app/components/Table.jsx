@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function Table(props) {
   const rows = props.rows;
@@ -74,6 +74,10 @@ export default function Table(props) {
     }
   }
 
+  function getTotalNoTax(quantity, cost) {
+    return parseFloat((parseFloat(quantity) * parseFloat(cost)).toFixed(2));
+  }
+
   /**
    * takes in the value of the current item and returns the tax amount
    * @param {total} value
@@ -82,7 +86,9 @@ export default function Table(props) {
   function addTax(value) {
     const noTaxVal = parseFloat(value);
     const calculatedTax = parseFloat(noTaxVal) * taxRate;
-    console.log(`[debug] tax amount: ${calculatedTax}`);
+    console.log(
+      `[debug] tax amount: ${calculatedTax} with no tax being ${noTaxVal}`
+    );
     return parseFloat(calculatedTax.toFixed(2)); // TODO: is this sufficient rounding for taxes?
   }
 
@@ -95,18 +101,29 @@ export default function Table(props) {
   function rowChange(event) {
     // deconstruct id and value
     const { id, value, checked } = event.target;
-    let total = parseFloat(rowState.total);
+    let total = rowState.total;
+    let taxTotal = addTax(getTotalNoTax(rowState.quantity, rowState.cost));
 
     // if qty is changed, calculate new total
     if (id == "quantity") {
       total = value * rowState.cost;
       total = parseFloat(total.toFixed(2));
+      let taxTotal = addTax(total);
+      if (rowState.tax) {
+        console.log("cost changed and tax is checked!");
+        total = total + taxTotal;
+      }
     }
 
     // if cost is changed, calculate new total
     if (id == "cost") {
       total = value * rowState.quantity;
       total = parseFloat(total.toFixed(2));
+      let taxTotal = addTax(total);
+      if (rowState.tax) {
+        console.log("cost changed and tax is checked!");
+        total = total + taxTotal;
+      }
     }
 
     // deal with the checkbox
@@ -115,42 +132,34 @@ export default function Table(props) {
         return { ...prevVal, tax: checked };
       });
 
-      // if checkbox selected, calculate tax, otherwise, just set to cost * qty
+      // if checked, total now gets tax added to it
       if (checked) {
-        console.log("tax was checked");
+        console.log("tax is checked, adding tax");
         setRow((prevVal) => {
-          return {
-            ...prevVal,
-            total: parseFloat(rowState.total) + addTax(total),
-          };
+          console.log(
+            `total in block ${total} and tax ${taxTotal}\nPrev total ${prevVal.total} prev tax ${prevVal.taxTotal}`
+          );
+          return { ...prevVal, total: total + taxTotal, taxTotal: taxTotal };
         });
       } else {
-        total = rowState.cost * rowState.quantity;
+        // handles the uncheck. reset total, no tax
         setRow((prevVal) => {
-          return { ...prevVal, total: total };
+          let resetTotal = getTotalNoTax(prevVal.quantity, prevVal.cost);
+          return { ...prevVal, total: resetTotal };
         });
       }
     } else {
-      // update row state with tax
-      if (rowState.tax) {
-        console.log("Taxes...");
-        let tax = addTax(total);
-        setRow((prevVal) => {
-          return {
-            ...prevVal,
-            [id]: value,
-            total: total + tax,
-            taxTotal: tax,
-          };
-        });
-      } else {
-        console.log("updating row");
-        setRow((prevVal) => {
-          return { ...prevVal, [id]: value, total: total };
-        });
-      }
+      console.log("updating row");
+      setRow((prevVal) => {
+        return { ...prevVal, [id]: value, total: total, taxTotal: taxTotal };
+      });
     }
   }
+
+  // more debug
+  useEffect(() => {
+    console.log(rowState);
+  }, [rowState]);
 
   return (
     <div className="table-container">
