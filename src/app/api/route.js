@@ -26,8 +26,8 @@ export async function POST(request) {
   console.log(rows);
 
   rows.forEach((row) => {
-    const { name, cost, quantity, notes } = row;
-    console.log(`${name}\n${cost}\n${quantity}\n${notes}`);
+    const { name, cost, quantity, notes, taxTotal, tax } = row;
+    console.log(`${name}\n${cost}\n${quantity}\n${notes}\n${taxTotal}\n${tax}`);
   });
 
   const headers = new Headers();
