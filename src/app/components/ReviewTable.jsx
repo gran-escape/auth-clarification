@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function ReviewTable(props) {
-  console.log(props.info);
+  console.log(props.rows);
   const rows = props.rows;
   return (
     <div className="table-container">
@@ -17,33 +17,6 @@ export default function ReviewTable(props) {
           </tr>
         </thead>
         <tbody>
-          {/*<tr>
-            <td></td>
-            <td>
-              <input
-                className="invoiceInput"
-                type="text"
-                id="name"
-                placeholder="Item"
-              />
-            </td>
-            <td>
-              $
-              <input className="invoiceInput" type="number" id="cost" />
-            </td>
-            <td>
-              <input className="invoiceInput" type="number" id="quantity" />
-            </td>
-            <td>
-              <input
-                className="invoiceInput"
-                type="text"
-                id="notes"
-                placeholder="Add Notes"
-              />
-            </td>
-            <td className="row-total">$</td>
-  </tr>*/}
           {rows.map((row, index) => {
             // deconstruct data passed through. It still has names from database
             const {
