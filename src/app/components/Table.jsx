@@ -14,8 +14,8 @@ export default function Table(props) {
     quantity: 1,
     notes: "",
     total: 1,
-    taxTotal: 0,
-    tax: false,
+    taxVal: 0,
+    taxed: false,
   });
 
   /**
@@ -63,9 +63,9 @@ export default function Table(props) {
         cost: 1.0,
         quantity: 1,
         notes: "",
-        taxTotal: 0,
+        taxVal: 0,
         total: 1,
-        tax: false,
+        taxed: false,
       });
     } else {
       alert(
@@ -102,18 +102,18 @@ export default function Table(props) {
     // deconstruct id and value
     const { id, value, checked } = event.target;
     let total = rowState.total;
-    let taxTotal = addTax(getTotalNoTax(rowState.quantity, rowState.cost));
+    let taxVal = addTax(getTotalNoTax(rowState.quantity, rowState.cost));
 
     // if qty is changed, calculate new total
     if (id == "quantity") {
       console.log(`qty changed to ${value}`);
       total = value * rowState.cost;
       total = parseFloat(total.toFixed(2));
-      taxTotal = addTax(total);
-      console.log(`taxTotal is ${taxTotal}`);
-      if (rowState.tax) {
+      taxVal = addTax(total);
+      console.log(`taxVal is ${taxVal}`);
+      if (rowState.taxed) {
         console.log("cost changed and tax is checked!");
-        total = total + taxTotal;
+        total = total + taxVal;
       }
     }
 
@@ -122,10 +122,10 @@ export default function Table(props) {
       console.log(`cost changed to ${value}`);
       total = value * rowState.quantity;
       total = parseFloat(total.toFixed(2));
-      taxTotal = addTax(total);
-      if (rowState.tax) {
+      taxVal = addTax(total);
+      if (rowState.taxed) {
         console.log("cost changed and tax is checked!");
-        total = total + taxTotal;
+        total = total + taxVal;
       }
     }
 
@@ -133,7 +133,7 @@ export default function Table(props) {
     if (id == "tax") {
       console.log("taxed");
       setRow((prevVal) => {
-        return { ...prevVal, tax: checked };
+        return { ...prevVal, taxed: checked };
       });
 
       // if checked, total now gets tax added to it
@@ -141,9 +141,9 @@ export default function Table(props) {
         console.log("tax is checked, adding tax");
         setRow((prevVal) => {
           console.log(
-            `total in block ${total} and tax ${taxTotal}\nPrev total ${prevVal.total} prev tax ${prevVal.taxTotal}`
+            `total in block ${total} and tax ${taxVal}\nPrev total ${prevVal.total} prev tax ${prevVal.taxVal}`
           );
-          return { ...prevVal, total: total + taxTotal, taxTotal: taxTotal };
+          return { ...prevVal, total: total + taxVal, taxVal: taxVal };
         });
       } else {
         // handles the uncheck. reset total, no tax
@@ -153,9 +153,9 @@ export default function Table(props) {
         });
       }
     } else {
-      console.log("all conditions checked, updating taxTotal" + taxTotal);
+      console.log("all conditions checked, updating taxVal" + taxVal);
       setRow((prevVal) => {
-        return { ...prevVal, [id]: value, total: total, taxTotal: taxTotal };
+        return { ...prevVal, [id]: value, total: total, taxVal: taxVal };
       });
     }
   }
@@ -226,7 +226,7 @@ export default function Table(props) {
                 type="checkbox"
                 name="tax"
                 id="tax"
-                checked={rowState.tax}
+                checked={rowState.taxed}
                 onChange={rowChange}
               />
             </td>
@@ -250,7 +250,7 @@ export default function Table(props) {
                 <td>{row.quantity}</td>
                 <td>{row.notes}</td>
                 <td>
-                  <input type="checkbox" checked={row.tax} disabled />
+                  <input type="checkbox" checked={row.taxed} disabled />
                 </td>
                 <td className="row-total">{row.total}</td>
                 <td>
